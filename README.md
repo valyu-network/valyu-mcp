@@ -107,4 +107,5 @@ This project is licensed under the MIT License.
 
 ---
 
-For more information about Valyu, visit [valyu.network](https://www.valyu.network).
+For more information about what we are building at Valyu, visit [valyu.network](https://www.valyu.network).
+And check out our blogs at [valyu.network/blog](https://valyu.network/blog).
