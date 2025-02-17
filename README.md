@@ -1,6 +1,6 @@
 # Valyu MCP Server
 
-The Valyu MCP Server is a Model Context Protocol (MCP) tool that enables AI models to retrieve high-quality context from Valyu's API, including full search capabilities over Wikipedia, arXiv (great for finance, research, etc.), and web search.
+The Valyu MCP Server is a Model Context Protocol (MCP) tool that enables AI models to retrieve high-quality context from Valyu's API, including full search capabilities over Wikipedia, arXiv papers (great for finance, research, etc.), and web search.
 
 ## Prerequisites
 
