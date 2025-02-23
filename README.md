@@ -30,8 +30,8 @@ cd valyu-mcp
 2. **Run the setup script**
 
 ```bash
-chmod +x setup.sh  # Make the script executable (macOS/Linux only)
-./setup.sh         # Run the setup script
+chmod +x setup.sh  
+./setup.sh       
 ```
 
 The setup script will:
