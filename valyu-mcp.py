@@ -4,16 +4,17 @@ from mcp.server.fastmcp import FastMCP
 import logging
 
 logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    force=True
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s", force=True
 )
 logger = logging.getLogger(__name__)
 
 mcp = FastMCP("valyu-mcp")
 valyu = None
 
-async def make_valyu_request(query: str, max_num_results: int = 10, max_price: int = 10) -> Optional[SearchResponse]:
+
+async def make_valyu_request(
+    query: str, max_num_results: int = 10, max_price: int = 10
+) -> Optional[SearchResponse]:
     """
     Initiates a request to the Valyu API, incorporating error handling and logging for debugging purposes.
 
@@ -26,14 +27,23 @@ async def make_valyu_request(query: str, max_num_results: int = 10, max_price: i
     - Optional[SearchResponse]: The response received from the Valyu API or None if an error occurs.
     """
     try:
-        logger.info(f"Making Valyu request - query: {query}, max_results: {max_num_results}, max_price: {max_price}")
-        response = valyu.context(query=query, search_type="all", max_num_results=max_num_results, max_price=max_price)
+        logger.info(
+            f"Making Valyu request - query: {query}, max_results: {max_num_results}, max_price: {max_price}"
+        )
+        response = valyu.context(
+            query=query,
+            search_type="all",
+            max_num_results=max_num_results,
+            max_price=max_price,
+            query_rewrite=False,
+        )
         logger.info(f"Received Valyu response: {response}")
         return response
     except Exception as e:
         logger.error(f"Error making Valyu request: {str(e)}")
         return None
-    
+
+
 def format_valyu_results(data: SearchResponse) -> str:
     """
     Formats the Valyu context results for feeding back to the model as context.
@@ -62,10 +72,25 @@ URL: {result.url}"""
 @mcp.tool()
 async def valyu_context(query: str, max_num_results: int = 10) -> str:
     """
-    Retrieves context using the Valyu API.
+    A powerful search tool that provides relevant, up-to-date information from across the web and proprietary data sources.
+    Use this tool whenever you need to:
+    1. Find current information about any topic
+    2. Research specific questions or concepts
+    3. Get context about companies, technologies, or trends
+    4. Verify facts or gather supporting information
+    5. Access real-world data and examples
+
+    Parameters:
+    - query (str): The search query. Be specific and detailed in your query for best results.
+    - max_num_results (int, optional): Maximum number of results to return (default: 10, max: 5)
+
+    Returns:
+    - str: Formatted search results including titles, content, and source URLs.
     """
-    logger.info(f"Starting valyu_context tool call - query: {query}, max_results: {max_num_results}")
-    
+    logger.info(
+        f"Starting valyu_context tool call - query: {query}, max_results: {max_num_results}"
+    )
+
     try:
         # Ensure count is within bounds but keep it smaller for faster responses
         max_num_results = min(max(1, max_num_results), 5)  # Reduced from 20 to 5
@@ -78,10 +103,11 @@ async def valyu_context(query: str, max_num_results: int = 10) -> str:
         formatted_results = format_valyu_results(data)
         logger.info(f"Successfully formatted {len(data.results)} results")
         return formatted_results
-        
+
     except Exception as e:
         logger.error(f"Error in valyu_context: {str(e)}")
         return f"Error executing valyu_context: {str(e)}"
+
 
 if __name__ == "__main__":
     import os
@@ -96,7 +122,7 @@ if __name__ == "__main__":
         logger.info("Server initialized successfully with Valyu API key")
 
         # Initialize and run the server using stdio transport
-        mcp.run(transport='stdio')
+        mcp.run(transport="stdio")
     except Exception as e:
         logger.error(f"Fatal error running MCP server: {str(e)}")
         exit(1)
